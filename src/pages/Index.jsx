@@ -1,4 +1,5 @@
 import { Container, Text, VStack, Heading, Button } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import { FaRocket } from "react-icons/fa";
 
 const Index = () => {
@@ -9,6 +10,9 @@ const Index = () => {
         <Text fontSize="lg">This is your starting point. Begin building something amazing!</Text>
         <Button leftIcon={<FaRocket />} colorScheme="teal" size="lg">
           Get Started
+        </Button>
+        <Button as={Link} to="/events" colorScheme="teal" size="lg">
+          View Events
         </Button>
       </VStack>
     </Container>
