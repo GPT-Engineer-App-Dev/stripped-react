@@ -22,9 +22,6 @@ const fromSupabase = async (query) => {
 
 /* supabase integration types
 
-// EXAMPLE TYPES SECTION
-// DO NOT USE TYPESCRIPT
-
 User // table: users
     id: number
     username: string
@@ -41,7 +38,16 @@ Comment // table: comments
     post_id: number // foreign key to Post
     user_id: number // foreign key to User
     content: string
-	
+
+Event // table: events
+    id: number
+    created_at: string
+    name: string
+    date: string
+    venue_id: number
+    is_starred: boolean
+    private: boolean
+    cancelled: boolean
 */
 
 // Hooks for User table
@@ -148,6 +154,42 @@ export const useDeleteComment = () => {
         mutationFn: (commentId) => fromSupabase(supabase.from('comments').delete().eq('id', commentId)),
         onSuccess: () => {
             queryClient.invalidateQueries('comments');
+        },
+    });
+};
+
+// Hooks for Event table
+export const useEvents = () => useQuery({
+    queryKey: ['events'],
+    queryFn: () => fromSupabase(supabase.from('events').select('*')),
+});
+
+export const useAddEvent = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (newEvent) => fromSupabase(supabase.from('events').insert([newEvent])),
+        onSuccess: () => {
+            queryClient.invalidateQueries('events');
+        },
+    });
+};
+
+export const useUpdateEvent = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (updatedEvent) => fromSupabase(supabase.from('events').update(updatedEvent).eq('id', updatedEvent.id)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('events');
+        },
+    });
+};
+
+export const useDeleteEvent = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: (eventId) => fromSupabase(supabase.from('events').delete().eq('id', eventId)),
+        onSuccess: () => {
+            queryClient.invalidateQueries('events');
         },
     });
 };
